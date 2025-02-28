@@ -1,0 +1,18 @@
+# Core dependencies
+flask==2.0.2
+requests==2.26.0
+
+# Database dependencies
+sqlalchemy==1.4.25
+psycopg2-binary==2.9.1
+
+# Testing dependencies
+pytest==6.2.5
+pytest-flask==1.2.0
+
+# Linting and formatting
+flake8==3.9.2
+black==21.9b0
+
+# Download video dependencies
+youtube_dl==2024.12.23
