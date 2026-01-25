@@ -14,12 +14,18 @@ def download_video(url, output_folder="downloads"):
     if not os.path.exists(output_folder):
         os.makedirs(output_folder)
 
+    # Define path to local ffmpeg
+    ffmpeg_path = os.path.join(
+        os.path.dirname(os.path.abspath(__file__)), "ffmpeg_711", "bin"
+    )
+
     # yt-dlp options for optimal quality
     ydl_opts = {
+        "ffmpeg_location": ffmpeg_path,
         "outtmpl": os.path.join(
             output_folder, "%(title)s.%(ext)s"
         ),  # Save as title.extension
-        "format": "bestvideo[height<=1080]+bestaudio/best",  # Prefer 1080p, fallback to best available
+        "format": "bestvideo+bestaudio[ext=m4a]/bestvideo+bestaudio/best",  # Download highest quality video and audio (prefer m4a for compatibility)
         "quiet": False,  # Show download progress
         "merge_output_format": "mp4",  # Merge video and audio as MP4
     }
@@ -49,10 +55,7 @@ if __name__ == "__main__":
     # git clone https://git.ffmpeg.org/ffmpeg.git ffmpeg
     # List of video URLs
     video_urls = [
-        "https://www.youtube.com/watch?v=goyxrroH--Q",  # Example YouTube video
-        # "https://www.tiktok.com/@user/video/1234567890",  # Example TikTok video
-        "https://vtv.vn/video/cong-nghe-doi-song-khi-nguoi-tre-lam-khoa-hoc-93481.htm?gidzl=4RL_EsGYtnOMgdirPpdP6HUeVJvxRTXE2FyfFozWZHW9f7bkBpFRJbYcUJWiDebFMAHvR6H2ffKKOIFR5m",  # Direct video link
-        "https://vtv.vn/video/cong-nghe-doi-song-co-che-dac-thu-khuyen-khich-doanh-nghiep-doi-moi-sang-tao-98733.htm?gidzl=GflSLu12o455XDXPWrdEJaI6s5EV3SaOMz6CKii0d4vQYjm3orFA60k8t5N8LfWP2uhS0MJrw24lXKFCG0",
+        "https://www.youtube.com/watch?v=QFwIWcc5OmA",
     ]
 
     # Folder to save videos
