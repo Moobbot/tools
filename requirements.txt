@@ -24,3 +24,4 @@ openpyxl==3.1.2
 reportlab==3.6.12
 xlsx2pdf==1.0.4
 pywin32==306
+pymupdf==1.25.1

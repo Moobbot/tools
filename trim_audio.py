@@ -11,7 +11,7 @@ Dependencies:
 Installation:
     1. Install pydub:
         pip install pydub
-    
+
     2. Install ffmpeg:
         - Windows: Download from https://ffmpeg.org/download.html and add to PATH
         - Linux/macOS: sudo apt install ffmpeg
@@ -23,19 +23,29 @@ Usage:
 
 Output:
     - Creates an 'output_chunks' directory
-    - Saves individual audio chunks as WAV/MP3 files named 'recording_part_X.wav'
+    - Saves individual audio chunks as WAV/MP3 files named 'recording_part_X.mp3'
     where X is the chunk number
 """
 
-from pydub import AudioSegment
-import math
 import os
 
+# Define path to local ffmpeg and add to PATH BEFORE importing pydub
+ffmpeg_path = os.path.join(
+    os.path.dirname(os.path.abspath(__file__)), "ffmpeg_711", "bin"
+)
+os.environ["PATH"] = ffmpeg_path + os.pathsep + os.environ.get("PATH", "")
+
+from pydub import AudioSegment
+
+AudioSegment.converter = os.path.join(ffmpeg_path, "ffmpeg.exe")
+AudioSegment.ffprobe = os.path.join(ffmpeg_path, "ffprobe.exe")
+import math
+
 # Load the input audio file
-audio = AudioSegment.from_file("Seminar_interns_AIRC.mp3")
+audio = AudioSegment.from_file("test.m4a")
 
 # Define chunk duration (30 minutes in milliseconds)
-chunk_length_ms = 30 * 60 * 1000  # 30 minutes = 1800 seconds
+chunk_length_ms = 60 * 60 * 1000  # 30 minutes = 1800 seconds
 
 # Calculate total duration of the audio file
 total_length_ms = len(audio)
@@ -51,12 +61,12 @@ for i in range(num_chunks):
     # Calculate start and end times for current chunk
     start = i * chunk_length_ms
     end = min((i + 1) * chunk_length_ms, total_length_ms)
-    
+
     # Extract the chunk
     chunk = audio[start:end]
-    
-    # Save the chunk as WAV file
-    chunk.export(f"output_chunks/recording_part_{i+1}.wav", format="wav")
-    print(f"Đã xuất: recording_part_{i+1}.wav")
+
+    # Save the chunk as MP3 file
+    chunk.export(f"output_chunks/test_{i+1}.mp3", format="mp3")
+    print(f"Đã xuất: test_{i+1}.mp3")
 
 print("✅ Đã hoàn tất chia nhỏ file ghi âm.")
